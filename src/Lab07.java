@@ -1,4 +1,5 @@
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Lab07 {
     public static void main(String[] args){
@@ -19,6 +20,11 @@ public class Lab07 {
         //hs.addAll(sth);
         hs.retainAll(sth);
         System.out.println(hs);
+
+        Iterator<String> itr = hs.iterator();
+        while (itr.hasNext()){
+            System.out.print(itr.next() + " ");
+        }
 
         //hs.clear();
 
