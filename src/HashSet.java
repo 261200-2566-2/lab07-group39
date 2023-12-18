@@ -1,8 +1,10 @@
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
-public class HashSet<E>{
+public class HashSet<E> implements Set<E>{
     HashMap<E, Object> hm;
     int capacity;
     int size;
@@ -18,11 +20,11 @@ public class HashSet<E>{
     public boolean isEmpty(){
         return size == 0;
     }
-    public boolean contains(E element){
-        return hm.containsKey(element);
+    public boolean contains(Object o){
+        return hm.containsKey(o);
     }
-    public boolean containsAll(Collection<? extends E> col){
-        for (E o : col){
+    public boolean containsAll(Collection<?> col){
+        for (Object o : col){
             if (!hm.containsKey(o)) return false;
         }
         return true;
@@ -36,6 +38,9 @@ public class HashSet<E>{
         }
         return arr;
     }
+    public <T> T[] toArray(T[] t){
+        return null;
+    }
     public boolean add(E element){
         if (contains(element)) return false;
         if (size >= capacity) return false;
@@ -47,34 +52,43 @@ public class HashSet<E>{
     public boolean addAll(Collection<? extends E> col){
         if (col.size() + size > capacity) return false;
         for (E e : col){
+            if (size >= capacity) return true;
             if (!hm.containsKey(e)){
                 hm.put(e, new Object());
+                size++;
             }
         }
         return true;
     }
-    public boolean remove(E element){
-        if (hm.get(element) == null) return false;
+    public boolean remove(Object o){
+        if (hm.get(o) == null) return false;
 
-        hm.remove(element);
+        hm.remove(o);
+        size--;
         return true;
     }
-    public boolean removeAll(Collection<? extends E> col){
-        for (E e : col){
-            if (hm.containsKey(e)){
-                hm.remove(e);
+    public boolean removeAll(Collection<?> col){
+        for (Object o : col){
+            if (hm.containsKey(o)){
+                hm.remove(o);
+                size--;
             }
         }
         return true;
     }
 
-    public boolean retainAll(Collection<? extends E> col){
+    public boolean retainAll(Collection<?> col){
         for (E e : hm.keySet()){
             if (!col.contains(e)){
                 hm.remove(e);
+                size--;
             }
         }
         return true;
+    }
+
+    public Iterator iterator(){
+        return null;
     }
 
     public void clear(){
