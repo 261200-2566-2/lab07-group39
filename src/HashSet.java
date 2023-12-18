@@ -51,14 +51,17 @@ public class HashSet<E> implements Set<E>{
     }
     public boolean addAll(Collection<? extends E> col){
         if (col.size() + size > capacity) return false;
+
+        boolean editted = false;
         for (E e : col){
-            if (size >= capacity) return true;
+            if (size >= capacity) break;
             if (!hm.containsKey(e)){
                 hm.put(e, new Object());
                 size++;
+                editted = true;
             }
         }
-        return true;
+        return editted;
     }
     public boolean remove(Object o){
         if (hm.get(o) == null) return false;
@@ -68,27 +71,42 @@ public class HashSet<E> implements Set<E>{
         return true;
     }
     public boolean removeAll(Collection<?> col){
+        boolean editted = false;
         for (Object o : col){
             if (hm.containsKey(o)){
                 hm.remove(o);
                 size--;
+                editted = true;
             }
         }
-        return true;
+        return editted;
     }
 
     public boolean retainAll(Collection<?> col){
+        boolean editted = false;
         for (E e : hm.keySet()){
             if (!col.contains(e)){
                 hm.remove(e);
                 size--;
+                editted = true;
             }
         }
-        return true;
+        return editted;
     }
 
     public Iterator iterator(){
-        return null;
+        Iterator<E> itr = hm.keySet().iterator();
+        return new Iterator() {
+            @Override
+            public boolean hasNext() {
+                return itr.hasNext();
+            }
+
+            @Override
+            public Object next() {
+                return itr.next();
+            }
+        };
     }
 
     public void clear(){
